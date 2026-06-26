@@ -1,0 +1,153 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Vitamin C Face Wash",
+      "description": "Gentle daily cleanser for glowing skin. Removes dirt and oil without drying.",
+      "category": "Face Wash",
+      "ingredients": [
+        "Vitamin C",
+        "Aloe Vera",
+        "Hyaluronic Acid",
+        "Niacinamide"
+      ],
+      "usage": "Oily to combination skin. Daily morning and night use.",
+      "howToUse": "Wet face with water. Take small amount, massage for 30 seconds. Rinse with lukewarm water. Pat dry.",
+      "rating": 4.5,
+      "rate": 299,
+      "mrp": 399,
+      "discount": 25,
+      "taxDetails": {
+        "gst": "18%",
+        "inclusive": true
+      },
+      "clinicalResults": "92% users saw brighter skin in 2 weeks. 89% felt skin was softer after first wash.",
+      "offers": "Buy 2 Get 1 Free + Free Shipping above ₹499",
+      "whatMakesItToBuy": "Dermatologist tested, No parabens, No sulfates, Made in India, Cruelty-free",
+      "image": "https://bellavitaorganic.com/cdn/shop/files/image-5.jpg?v=1720422013&width=3000",
+      "stock": 150
+    },
+    {
+      "id": "2",
+      "name": "Rose Water Toner",
+      "description": "Alcohol-free toner that balances pH and tightens pores instantly.",
+      "category": "Toner",
+      "ingredients": [
+        "Rose Water",
+        "Witch Hazel",
+        "Glycerin",
+        "Chamomile Extract"
+      ],
+      "usage": "All skin types. After cleansing, before serum.",
+      "howToUse": "Take on cotton pad. Gently wipe face in upward strokes. Avoid eye area.",
+      "rating": 4.7,
+      "rate": 349,
+      "mrp": 449,
+      "discount": 22,
+      "taxDetails": {
+        "gst": "12%",
+        "inclusive": true
+      },
+      "clinicalResults": "95% users felt pores appeared smaller in 3 weeks. pH balance improved in 7 days.",
+      "offers": "Flat 20% OFF on first order",
+      "whatMakesItToBuy": "100% Natural, No alcohol, Vegan, 200ml big bottle",
+      "image": "https://img.magnific.com/premium-photo/rose-water-toner-skin-hydration-cleansing_1105604-48215.jpg",
+      "stock": 200
+    },
+    {
+      "id": "3",
+      "name": "10% Vitamin C Serum",
+      "description": "Brightening serum that fades dark spots and boosts collagen.",
+      "category": "Serum",
+      "ingredients": [
+        "Vitamin C 10%",
+        "Vitamin E",
+        "Ferulic Acid",
+        "Hyaluronic Acid"
+      ],
+      "usage": "Dull and pigmented skin. Use at night for best results.",
+      "howToUse": "After toner, take 2-3 drops on palm. Pat gently on face and neck. Follow with moisturizer.",
+      "rating": 4.8,
+      "rate": 599,
+      "mrp": 799,
+      "discount": 25,
+      "taxDetails": {
+        "gst": "18%",
+        "inclusive": true
+      },
+      "clinicalResults": "87% users saw reduction in dark spots in 4 weeks. Skin radiance improved by 40%.",
+      "offers": "Combo with Face Wash at ₹799 only",
+      "whatMakesItToBuy": "Stable formula, No fragrance, Fast absorption, Glass dropper bottle",
+      "image": "https://5.imimg.com/data5/SELLER/Default/2024/8/446941341/UG/OD/JK/226915137/peezons-vitamin-c-face-serum-500x500.jpg",
+      "stock": 120
+    },
+    {
+      "id": "4",
+      "name": "Rice and Ceramide Moisturizer",
+      "description": "Deep hydration cream that repairs skin barrier for 24 hours.",
+      "category": "Moisturizer",
+      "ingredients": [
+        "Ceramides",
+        "Shea Butter",
+        "Squalane",
+        "Peptides"
+      ],
+      "usage": "Dry to sensitive skin. Day and night use.",
+      "howToUse": "Take pea size amount. Apply on clean face in upward motions. Use daily.",
+      "rating": 4.6,
+      "rate": 449,
+      "mrp": 599,
+      "discount": 25,
+      "taxDetails": {
+        "gst": "18%",
+        "inclusive": true
+      },
+      "clinicalResults": "94% users reported 24hr hydration. Skin barrier repair seen in 10 days.",
+      "offers": "Save ₹150 on Moisturizer + Serum combo",
+      "whatMakesItToBuy": "Fragrance-free, Non-comedogenic, For sensitive skin, 50g tub",
+      "image": "https://tse4.mm.bing.net/th/id/OIP.F3flihVNWsg8CYj2kXrKKQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "stock": 180
+    },
+    {
+      "id": "5",
+      "name": "SPF 50 Sunscreen Gel",
+      "description": "Lightweight sunscreen with no white cast. PA++++ protection.",
+      "category": "Sunscreen",
+      "ingredients": [
+        "Zinc Oxide",
+        "Niacinamide",
+        "Aloe Vera",
+        "Green Tea Extract"
+      ],
+      "usage": "All skin types. Daily morning use, reapply every 3 hours.",
+      "howToUse": "After moisturizer, take 2 finger amount. Apply 15 mins before sun exposure.",
+      "rating": 4.9,
+      "rate": 399,
+      "mrp": 499,
+      "discount": 20,
+      "taxDetails": {
+        "gst": "18%",
+        "inclusive": true
+      },
+      "clinicalResults": "SPF 50 tested. 98% UVA/UVB protection. No white cast on Indian skin tones.",
+      "offers": "Free travel pouch with every Sunscreen",
+      "whatMakesItToBuy": "Water resistant, Gel based, No white cast, Made for Indian climate",
+      "image": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/2b27c5223192847.67fa88ce27f87.png",
+      "stock": 250
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "teja",
+      "email": "teja@gmail.com",
+      "password": "admin123"
+    },
+    {
+      "name": "Lekha",
+      "email": "lekha@gmail.com",
+      "password": "Lekha@123",
+      "id": "8F6-PDFbasY"
+    }
+  ]
+}
