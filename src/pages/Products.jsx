@@ -10,9 +10,9 @@ function Products() {
 
   const [category, setCategory] = useState("All");
 
-  const [budget, setBudget] = useState("All");
-
-  const [sort, setSort] = useState("");
+  const [priceRange, setPriceRange] = useState("All");
+const [skinType, setSkinType] = useState("All");
+const [sort, setSort] = useState("Popular");
 
   async function getProducts() {
     try {
@@ -36,28 +36,42 @@ function Products() {
     );
   }
 
-  const filteredProducts = products.filter((product) => {
-    const searchMatch = product.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+ const filteredProducts = products.filter((product) => {
+  const searchMatch = product.name
+    .toLowerCase()
+    .includes(search.toLowerCase());
 
-    const categoryMatch =
-      category === "All" || product.category === category;
+  const categoryMatch =
+    category === "All" || product.category === category;
 
-    const budgetMatch = budget === "All" || product.budget === budget;
+  // Price Range filter
+  let priceMatch = true;
+  if (priceRange === "under299") {
+    priceMatch = product.rate < 299;
+  } else if (priceRange === "299to599") {
+    priceMatch = product.rate >= 299 && product.rate <= 599;
+  } else if (priceRange === "above600") {
+    priceMatch = product.rate > 600;
+  }
 
-    return searchMatch && categoryMatch && budgetMatch;
-  });
+  // SkinType filter
+  const skinTypeMatch = 
+    skinType === "All" || 
+    product.skinType === skinType || 
+    product.skinType === "All";
+
+  return searchMatch && categoryMatch && priceMatch && skinTypeMatch;
+});
 
   let finalProducts = [...filteredProducts];
 
-  if (sort === "high") {
-    finalProducts.sort((a, b) => b.rating - a.rating);
-  }
-
-  if (sort === "low") {
-    finalProducts.sort((a, b) => a.rating - b.rating);
-  }
+ if (sort === "rating") {
+  finalProducts.sort((a, b) => b.rating - a.rating);
+} else if (sort === "lowToHigh") {
+  finalProducts.sort((a, b) => a.rate - b.rate);
+} else if (sort === "highToLow") {
+  finalProducts.sort((a, b) => b.rate - a.rate);
+}
   return (
     <>
       <h1>Popular Products</h1>
@@ -74,25 +88,41 @@ function Products() {
         />
 
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option>All</option>
-          <option>Face Wash</option>
-          <option>Toner</option>
-          <option>Serum</option>
-        </select>
+  <option>All</option>
+  <option>Face Wash</option>
+  <option>Toner</option>
+  <option>Serum</option>
+  <option>Moisturizer</option>
+  <option>Sunscreen</option>
+  <option>Face Mask</option>
+  <option>Eye Care</option>
+  <option>Lip Care</option>
+  <option>Body Care</option>
+  <option>Hair Care</option>
+  <option>Men's Care</option>
+</select>
 
-        <select value={budget} onChange={(e) => setBudget(e.target.value)}>
-          <option>All</option>
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-        </select>
-        <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="">Select</option>
+        <select value={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
+  <option value="All">All Prices</option>
+  <option value="under299">Under ₹299</option>
+  <option value="299to599">₹299 - ₹599</option>
+  <option value="above600">Above ₹600</option>
+</select>
 
-          <option value="high">High To Low</option>
+<select value={skinType} onChange={(e) => setSkinType(e.target.value)}>
+  <option value="All">All Skin Types</option>
+  <option value="Oily">Oily</option>
+  <option value="Dry">Dry</option>
+  <option value="Sensitive">Sensitive</option>
+  <option value="Combination">Combination</option>
+</select>
 
-          <option value="low">Low To High</option>
-        </select>
+<select value={sort} onChange={(e) => setSort(e.target.value)}>
+  <option value="Popular">Popular</option>
+  <option value="rating">Top Rated</option>
+  <option value="lowToHigh">Price: Low to High</option>
+  <option value="highToLow">Price: High to Low</option>
+</select>
       </div>
 
       <div className="products">

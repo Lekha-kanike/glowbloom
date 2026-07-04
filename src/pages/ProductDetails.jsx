@@ -1,118 +1,227 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
+import { toggleFavorite } from "../features/favoriteSlice";
+import { addToCart } from "../features/cartSlice";
 
 function ProductDetails() {
- const { id } = useParams();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [product, setProduct] = useState(null);
+  const [showReviews, setShowReviews] = useState(false);
+  const [loading, setLoading] = useState(true);
 
- const [product, setProduct] =
-   useState(null);
+  const favorites = useSelector((state) => state.favorites.items || []);
+  const isFavorite = product && favorites.some(item => item.id === product.id);
 
- useEffect(() => {
-   getProduct();
- }, []);
+  useEffect(() => {
+    getProduct();
+  }, [id]);
 
- async function getProduct() {
-   try {
-     const response = await api.get(
-       `/products/${id}`
-     );
+  async function getProduct() {
+    try {
+      const response = await api.get(`/products/${id}`);
+      setProduct(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  }
 
-     setProduct(response.data);
-   } catch (error) {
-     console.log(error);
-   }
- }
+  function handleAddFavorite() {
+    dispatch(toggleFavorite(product));
+    if (isFavorite) {
+      alert("Removed from Favorites! 🤍");
+    } else {
+      alert("Added to Favorites! ❤️");
+    }
+  }
 
- if (!product) {
-   return <h2>Loading...</h2>;
- }
+  function handleAddToCart() {
+    dispatch(addToCart(product));
+    alert("Added to Cart! 🛒");
+  }
 
- return (
-   <div className="details">
-     <img
-       src={product.image}
-       alt={product.name}
-     />
+  if (loading) {
+    return <div className="page-title">Loading...</div>;
+  }
 
-     <h1>{product.name}</h1>
+  if (!product) {
+    return <div className="page-title">Product not found 😕</div>;
+  }
 
-     <p>{product.description}</p>
+  return (
+    <div className="product-detail-container">
+      <button
+        onClick={() => navigate(-1)}
+        className="back-btn"
+      >
+        ← Back to Products
+      </button>
 
-     <h3>Usage</h3>
-    <p>{product.usage}</p>
+      <div className="detail-grid">
+        <div className="detail-image-wrapper">
+          {product.discount > 0 && (
+            <div className="offer-badge">{product.discount}% OFF</div>
+          )}
+          <button
+            className={`fav-icon ${isFavorite? 'active' : ''}`}
+            onClick={handleAddFavorite}
+          >
+            {isFavorite? '♥' : '♡'}
+          </button>
+          <img
+            src={product.image}
+            alt={product.name}
+          />
+        </div>
 
-    <h3>How to use the product</h3>
-    <p>{product.howToUse}</p>
+        <div className="detail-content">
+          <p style={{color: '#9ca3af', textTransform: 'uppercase', fontSize: '14px', letterSpacing: '1px', marginBottom: '8px'}}>
+            {product.category}
+          </p>
+          <h1>{product.name}</h1>
 
-    <h3>Ingredients</h3>
-    <p>{product.ingredients}</p>
+          <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px'}}>
+            <span style={{color: '#FFB400', fontSize: '20px'}}>⭐</span>
+            <span style={{fontSize: '18px', fontWeight: '600'}}>{product.rating}</span>
+            <span style={{color: '#757575'}}>({product.reviews?.length || 0} reviews)</span>
+          </div>
 
-    <h3>Clinical Results</h3>
-    <p>{product.clinicalResults}</p>
+          <div className="price-section" style={{marginBottom: '24px'}}>
+            <span className="current-price" style={{fontSize: '32px'}}>₹{product.rate}</span>
+            {product.mrp > product.rate && (
+              <>
+                <span className="mrp" style={{fontSize: '20px'}}>₹{product.mrp}</span>
+                <span className="discount-badge">Save ₹{product.mrp - product.rate}</span>
+              </>
+            )}
+          </div>
 
-    <h3>What Makes It Special</h3>
-    <p>{product.whatMakesItToBuy}</p>
+          <p style={{color: '#555', lineHeight: '1.7', marginBottom: '28px', fontSize: '15px'}}>
+            {product.description}
+          </p>
 
-    <h3>Rating</h3>
-    <p>⭐ {product.rating}</p>
+          <div className="detail-actions">
+            <button
+              onClick={handleAddFavorite}
+              className={isFavorite? "delete-btn" : "add-btn"}
+            >
+              {isFavorite? "❤️ Remove from Favorites" : "🤍 Add to Favorites"}
+            </button>
 
-    <h3>Price</h3>
-    <p>₹ {product.rate}</p>
+            <button onClick={handleAddToCart} className="view-btn">
+              Add to Cart
+            </button>
+          </div>
 
-    <h3>MRP RATE</h3>
-    <p>₹ {product.mrp}</p>
+          {product.offers && (
+            <div style={{background: '#E8F5E9', border: '2px solid #81C784', padding: '14px', borderRadius: '10px', marginBottom: '20px'}}>
+              <p style={{color: '#2E7D32', fontSize: '14px', fontWeight: '600', margin: 0}}>
+                🎁 {product.offers}
+              </p>
+            </div>
+          )}
 
-    <h3>Discount</h3>
-    <p>{product.discount}% off</p>
+          <span className={`stock-badge ${
+            product.stock > 10? 'in-stock' :
+            product.stock > 0? 'low-stock' :
+            'out-stock'
+          }`}>
+            {product.stock > 0? `${product.stock} units available` : "Out of Stock"}
+          </span>
+        </div>
+      </div>
 
-    <h3>Tax Details</h3>
+      {/* Info Sections */}
+      <div className="info-sections">
+        <div className="info-card">
+          <h3>Best For</h3>
+          <p>{product.usage}</p>
+        </div>
 
-    <p>GST : {product.taxDetails?.gst}
-        {product.taxDetails?.inclusive ? " (inclusive)" : " +Extra"}
-    </p>
+        <div className="info-card">
+          <h3>How to Use</h3>
+          <p>{product.howToUse}</p>
+        </div>
 
-    {/*<h3>Country</h3>
-     <p>{product.country}</p>
+        <div className="info-card">
+          <h3>Key Ingredients</h3>
+          <div style={{display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '12px'}}>
+            {product.ingredients?.map((item, idx) => (
+              <span key={idx} className="stock-badge in-stock">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
 
-     <h3>Category</h3>
-     <p>{product.category}</p>
+        {product.clinicalResults && (
+          <div className="info-card" style={{background: '#E3F2FD', borderColor: '#90CAF9'}}>
+            <h3>Clinical Results</h3>
+            <p>{product.clinicalResults}</p>
+          </div>
+        )}
 
-     <h3>Best Time To Visit</h3>
-     <p>{product.bestTimeToVisit}</p>
+        <div className="info-card">
+          <h3>What Makes It Special</h3>
+          <p>{product.whatMakesItToBuy}</p>
+        </div>
 
-     <h3>Duration</h3>
-     <p>{product.duration}</p>
+        <div className="info-card">
+          <h3>Tax Details</h3>
+          <p>
+            GST: {product.taxDetails?.gst}
+            {product.taxDetails?.inclusive? " (inclusive)" : " + Extra"}
+          </p>
+        </div>
 
-     <h3>Weather</h3>
-     <p>{product.weather}</p>
+        <div className="info-card">
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+            <h3 style={{margin: 0}}>
+              Customer Reviews ({product.reviews?.length || 0})
+            </h3>
+            <button
+              onClick={() => setShowReviews(!showReviews)}
+              className="add-btn"
+              style={{width: 'auto', padding: '12px 24px'}}
+            >
+              {showReviews? "Hide Reviews ↑" : "Show Reviews ↓"}
+            </button>
+          </div>
 
-     <h3>Language</h3>
-     <p>{product.language}</p>
-
-     <h3>Currency</h3>
-     <p>{product.currency}</p>
-
-     <h3>Budget</h3>
-     <p>₹ {product.price}</p>
-
-     <h3>Rating</h3>
-     <p>{product.rating}</p>
-
-     <h3>Famous For</h3>
-     <p>{product.famousFor}</p>
-
-     <h3>Top Attractions</h3>
-
-     <ul>
-       {product.attractions.map(
-         (place, index) => (
-           <li key={index}>{place}</li>
-         )
-       )}
-     </ul>*/}
-   </div>
- );
+          {showReviews && (
+            <div style={{marginTop: '20px'}}>
+              {product.reviews && product.reviews.length > 0? (
+                product.reviews.map(review => (
+                  <div key={review.id} style={{borderBottom: '1px solid #f0f0f0', paddingBottom: '16px', marginBottom: '16px'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '8px'}}>
+                      <div>
+                        <span style={{fontWeight: '600', color: '#702963'}}>{review.user}</span>
+                        <div style={{display: 'flex', gap: '2px', margin: '4px 0'}}>
+                          {[...Array(5)].map((_, i) => (
+                            <span key={i} style={{color: i < review.rating? '#FFB400' : '#ddd'}}>
+                              ⭐
+                            </span>
+                          ))}
+                        </div>
+                        <span style={{fontSize: '13px', color: '#999'}}>{review.date}</span>
+                      </div>
+                    </div>
+                    <p style={{color: '#555', margin: 0}}>{review.comment}</p>
+                  </div>
+                ))) : (
+                  <p style={{color: '#999', textAlign: 'center', padding: '32px 0'}}>No reviews yet. Be the first to review!</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default ProductDetails;
